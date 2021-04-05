@@ -1,0 +1,136 @@
+#include <string.h>
+#include <stdio.h>
+#include <pthread.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define init_time_task  0
+int option, nada, num_tasks=0;
+pthread_mutex_t key;
+
+int main(void)
+{
+	
+	
+	do{
+		system("clear");
+		printf("|========S=C=H=E=D=U=L=E=R========|\n");
+		printf("|=========1.-Nueva tarea==========|\n");
+		printf("|========2.-Listar tareas=========|\n");
+		printf("|=======3.-Iniciar tareas=========|\n");
+		printf("|====4.- Vaciar lista tareas======|\n");
+		printf("|===========5.- Salir=============|\n");
+		printf("|=================================|\n");	
+		printf("Ingresa la funcion a realizar: ");
+		scanf("%d", &option);
+		switch (option)
+		{
+			case 1:
+			{
+				printf("Cuantos 'Tasks' agregara a la cola?:");
+				scanf("%d", &num_tasks);
+				UploadDataTotask(num_tasks);					
+				break;
+			}
+			case 2:
+			{
+				for (int i = 0; i < 50; i++)
+				{
+					delay(2);
+				}
+				system("clear");
+				printf("HISTORICO DE PROCESOS\n");
+				ShowTasksFinish(num_tasks);
+				printf("PROCESOS EN ESPERA DE EJECUCION\n");
+				ShowTaskQueue(num_tasks);
+				for (int i = 0; i < 50; i++)
+				{
+					delay(7);
+				}
+				break;
+			}
+			case 3:
+			{
+				for (int i = 0; i < num_tasks; i++)
+				{
+					if (task[i].time_execute==0)
+					{
+						printf("NO HAY PROCESOS EN COLA DE ESPERA\n");
+						break;
+					}else
+					{
+						printf("ORDENANDO TASKS POR PRIORIDAD\n");
+						SortArray(num_tasks);
+						for (int i = 0; i < 50; i++)
+						{
+							delay(3);
+						}
+						for (int i = 0; i < 50; i++)
+						{
+							delay(1);
+						}
+						system("clear");
+
+						printf("IMPRIMIENDO PRIORIDAD ORDENADA\n");
+						ShowTaskQueue(num_tasks);
+						for (int i = 0; i < 50; i++)
+						{
+							delay(3);
+						}
+						printf("INICIALIZANDO PROCESOS\n");
+						for (int i = 0; i < 50; i++)
+						{
+							delay(2);
+						}
+						printf("OK\n");
+						printf("POR FAVOR ESPERE\n");
+						for (int i = 0; i < 50; i++)
+						{
+							delay(3);
+						}
+						system("clear");
+						pthread_t thread1;
+						pthread_mutex_init(&key,NULL);
+						pthread_create(&thread1,NULL,ExecuteTasks,NULL);
+						pthread_join(thread1,NULL);
+					}
+				}
+				break;
+			}
+			case 4:
+			{
+				EmptyListTask(num_tasks);
+				printf("OK\n");
+				for (int i = 0; i < 50; i++)
+				{
+					delay(3);
+				}
+				num_tasks = 0;
+				system("clear");	
+				break;
+			}
+			case 5:
+			{
+				printf("FINALIZANDO.");
+				for (int i = 0; i < 50; i++)
+				{
+					delay(5);
+					printf(".\n");	
+				}
+				system("clear");
+				break;
+			}
+			default :
+			{
+				printf("LO SENTIMOS PERO LA OPCION INGRESADA [%d] ES INVALIDA\n", option);
+				for (int i = 0; i < 50; i++)
+				{
+					delay(5);
+				}
+				system("clear");
+				break;
+			}
+		}
+	}while(option != 5);	
+	return 0;
+}
